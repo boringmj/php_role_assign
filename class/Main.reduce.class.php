@@ -22,9 +22,6 @@ class Main
         {
             $this->data=array(
                 'user'=>array(1,1,1,1,1),       //玩家期望点数,最低为1或至少不能全部为0(下文中用v表示)
-                'count'=>0,                     //总参与次数
-                'hit'=>0,                       //本机制命中次数
-                'normal_hit'=>0,                //正常随机命中次数
                 'add'=>2                        //参与每轮增加期望点数
             );
             $_COOKIE['data']=json_encode($this->data);
