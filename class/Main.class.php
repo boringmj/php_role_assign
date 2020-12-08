@@ -42,6 +42,8 @@ class Main
                 'count'=>0,                     //总参与次数
                 'hit'=>0,                       //本机制命中次数
                 'normal_hit'=>0,                //正常随机命中次数
+                'data'=>array(0,0,0,0,0),       //所有玩家命中次数
+                'data1'=>array(0,0,0,0,0),       //一般机制的玩家命中率
                 'add'=>2                        //参与每轮增加期望点数
             );
             echo "系统检测到您是第一次进行测试,如果您在一段时间内多次看到该警告请检查您的浏览器是否支持<u>cookie</u><br>";
@@ -63,7 +65,7 @@ class Main
         $R=rand(1,$S);
         $R1=$R;
         //取得一般结果
-        $R2=rand(0,count($this->data->user));
+        $R2=rand(0,count($this->data->user)-1);
         //得出区间属于哪位玩家P
         $P;
         foreach($this->data->user as $P1=>$v)
@@ -71,6 +73,7 @@ class Main
             if(($R1-=$v)<=0)
             {
                 $P=$P1;
+                $this->data->data[$P]+=1;
                 break;
             }
         }
@@ -98,6 +101,7 @@ class Main
         {
             $this->data->normal_hit+=1;
         }
+        $this->data->data1[$R2]+=1;
         $this->data->count+=1;
         //命中的玩家在本轮的命中率
         if($this->data->hit==0)
@@ -139,6 +143,18 @@ class Main
         foreach($this->data->user as $P1=>$v)
         {
             echo "玩家{$P1}有{$v}点&nbsp;&nbsp;&nbsp;";
+        }
+        echo "<br>玩家总命中点数<br>";
+        foreach($this->data->data as $P1=>$a)
+        {
+            $f=round($this->data->data[$P1]/$this->data->count,6)*100;
+            echo "玩家{$P1}总命中{$a}次($f%)&nbsp;&nbsp;&nbsp;";
+        }
+        echo "<br>一般机制玩家总命中点数<br>";
+        foreach($this->data->data1 as $P1=>$a)
+        {
+            $f=round($this->data->data1[$P1]/$this->data->count,6)*100;
+            echo "玩家{$P1}总命中{$a}次($f%)&nbsp;&nbsp;&nbsp;";
         }
     }
 
